@@ -4,6 +4,7 @@ A small ERP/CRM system for a wholesale/distribution company: customer CRM, produ
 
 Built for the **Full Stack Developer Case Study**.
 
+
 ---
 
 ## 1. Tech Stack
@@ -160,7 +161,7 @@ AWS is treated as a bonus per the case study; the primary path is free hosting:
 
 Update `FRONTEND_ORIGIN` on the backend once the frontend URL is known, to keep CORS locked down.
 
-### AWS path (bonus, optional)
+### AWS path (optional)
 - Backend: containerize with `backend/Dockerfile` and run on ECS Fargate / Elastic Beanstalk, or a
   small EC2 instance behind an ALB.
 - Database: RDS for PostgreSQL (free-tier eligible instance).
@@ -233,8 +234,24 @@ All endpoints return `{ success: boolean, data, meta? }` on success and
 
 ---
 
-## 10. Postman Collection
 
-Import `postman/Mini-ERP-CRM.postman_collection.json`. It includes a `baseUrl` collection variable
-(defaults to `http://localhost:4000`) and auto-captures the JWT into a `token` variable after
-"Login (Admin)" is run, so every other request is pre-authenticated.
+## 10. 🎥 Project Walkthrough
+
+I've recorded a complete walkthrough explaining the project, its business flow, role-based permissions, and key functionality.
+
+👉 **[Watch the Project Explanation Video]** https://drive.google.com/file/d/1BMmGkeKrxe2GK2NCCFSNQMPZ6GGKb78y/view?usp=sharing
+
+### What is covered in the video?
+
+- 🏢 Overview of the ERP + CRM system
+- 👥 Customer CRM and follow-up management
+- 📦 Product and inventory management
+- 🧾 Sales challan creation and workflow
+- 📊 Stock IN / OUT management
+- 🔄 Stock deduction when a challan is confirmed
+- 👨‍💼 Role-based access for Admin, Sales, Warehouse, and Accounts
+- 🔐 Backend authorization and API-level permission enforcement
+- 🚫 Unauthorized actions returning `403 Forbidden`
+- 🔗 Complete Sales → Challan → Warehouse → Dispatch flow
+
+---
