@@ -1,0 +1,42 @@
+# Local development stack: PostgreSQL + backend API.
+# Frontend is run separately with `npm run dev` (Vite) for hot reload,
+# or you can add a frontend service here if you prefer a fully containerized setup.
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: erp_user
+      POSTGRES_PASSWORD: erp_pass
+      POSTGRES_DB: mini_erp_crm
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./backend/sql/schema.sql:/docker-entrypoint-initdb.d/1-schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U erp_user -d mini_erp_crm"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 4000
+      NODE_ENV: development
+      DATABASE_URL: postgresql://erp_user:erp_pass@db:5432/mini_erp_crm
+      JWT_SECRET: dev_only_change_in_production
+      JWT_EXPIRES_IN: 8h
+      FRONTEND_ORIGIN: http://localhost:5173
+    ports:
+      - "4000:4000"
+
+volumes:
+  db_data:
